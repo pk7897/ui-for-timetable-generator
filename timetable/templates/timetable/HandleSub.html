@@ -1,0 +1,25 @@
+{% if classes %}
+	<form action="{% url 'timetable:Optional' %}" method="post">
+	  {% csrf_token %}
+		<p style="font-weight:bold;">Please select the required classes which must have the optional subject {{ s.subname }}:</p><br>
+		{% for c in classes %}
+			{% if c.cname == "Mainclass" or c.cname == "Unmapclass" %}
+			{% else %}
+				<input type = "checkbox" value = "{{c.cname}}" name = "classlist">{{ c.cname }}<br>
+			{% endif %}
+		{% endfor %}
+		<input type="submit" value="Submit">
+		<input type="reset" value="Reset">
+	</form>
+{% else %}	
+	<p style="font-weight:bold;">Message : {{ message }} </p>
+	{% if iserror %}
+		<p>Click on the below link to back and Add Subject</p>
+		<a href="/timetable/processind/2">AddSubject</a>
+	{% else %}
+		<p>Click on the below link to Add Faculties</p>
+		<a href="{% url 'timetable:Fac' id=subjectID %}">AddFaculties</a>
+	{% endif %}
+	<p>Click on the below link to go to home page</p>
+	<a href="/timetable/">Home</a>
+{% endif %}

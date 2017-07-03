@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<title>Adding Faculties </title>
+<body>
+	{% if isgroup %}
+		<a href="{% url 'timetable:Sub' id=groupid %}">Subjects</a>
+	{% endif %}
+	<a href="/timetable/">Home</a><br><br>
+	{% if not indnorm %}
+		{% if constr %}
+			<form action="{% url 'timetable:processWH' id=subjectid %}"  method="post">
+			{% csrf_token %}
+			  <fieldset>
+				<legend>Add Working Hours</legend>
+				<p style="font-weight:bold;">No. of working hours:</p>	
+				<input type="text" placeholder="Enter working hours in numbers" name="wh" required><br>
+				<p style="font-weight:bold;">Constraint on working hours per day:</p>
+				<input type="radio" value="Yes" name="constr1" >Yes
+				<input type="radio" value="No" name="constr1" checked>No<br>
+				<p style="font-weight:bold;">No. of fixed slots:</p>
+				<input type="text" value="0" name="constr2" >
+				<br>
+				<br>
+				<input type="submit" value="Enter">
+				<input type="reset" value="Reset">
+			  </fieldset> 
+			</form>
+			<br>
+		{% else %}
+			<p style="font-weight:bold;">The added constraints are:</p>
+			No. of working hours: {{wh}}<br>
+			{% if isc1 %}
+				Working hours distribution: {{whpd}}<br>
+			{% else %}
+				Working hours distribution: None<br>
+			{% endif %}
+			{% if isc2 %}
+				Fixed Slots: {{slots}}<br><br>
+			{% else %}
+				Fixed Slots: None<br><br>
+			{% endif %}
+		{% endif %}	
+	{% endif %}
+	<fieldset>
+		<legend>AddFaculty</legend>
+		<form action="{% url 'timetable:processFac' id=1 %}" method="post">
+		  {% csrf_token %}
+		  	<p style="font-weight:bold;">Faculty name:</p>	
+			<input type="text" placeholder="Enter Faculty name" name="facname" required>
+			<br>
+			<br>
+			<input type="submit" value="Add">
+			<input type="reset" value="Reset">
+		</form>
+		{% if unmapfac %}
+		<form action="{% url 'timetable:processFac' id=2 %}" method="post">
+	  	  {% csrf_token %}
+			<p style="font-weight:bold;"> Or Select from the below unmapped Faculties:</p>
+			<select name="unmapfaculty">
+				<option value="None">Select from the unmapped Faculties</option>
+			  {% for f in unmapfac %}
+			  	<option value="{{ f.facname }}">{{ f.facname }}</option>
+			  {% endfor %}
+			</select><br><br>
+			<input type="submit" value="Add">
+			<input type="reset" value="Reset">
+		</form>
+		{% endif %}
+	</fieldset>
+	{% if faculties %}
+		<br>
+		<h4>The Added Faculties are:</h4>
+		{% for f in faculties %}
+			{{ f.facname }}
+			<br>
+		{% endfor %}
+	{% endif %}
+	
+	
+</body>
+</html>
+

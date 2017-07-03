@@ -1,0 +1,15 @@
+<p style="font-weight:bold;">Message : {{ message }} </p>
+{% if check %}
+	<form action="{% url 'timetable:mul_fac' id=subjectid %}" method="post">
+	  {% csrf_token %}
+	  	<input type="radio" value="Yes" name="choice" checked>Yes
+		<input type="radio" value="No" name="choice">No	
+		<br><input type="submit" value="Submit">
+	</form>
+	<br>
+{% endif %}
+<p >Click on the below link to go back and add Faculties or Working hours for {{ subjectname }}</p>
+<a href="{% url 'timetable:Fac' id=subjectid %}">Faculties</a>
+<br>
+<p >Click on the below link to go to home page</p>
+<a href="/timetable/">Home</a>

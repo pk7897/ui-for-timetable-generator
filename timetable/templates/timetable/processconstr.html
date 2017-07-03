@@ -1,0 +1,16 @@
+<p style = "font-weight:bold;">Message: {{ message }}</p>
+{% if iserror %}
+<p>Click on the below link to add the Constraints properly for <strong>'{{ subjectname }}'</strong</p><br><br>
+<a href="{% url 'timetable:displconstr' id=subjectid %}">Constraints</a>
+{% else %}
+<p>Click on the below link to add Faculties or view the added Constraints <strong>'{{ subjectname }}'</strong</p><br><br>
+<a href="{% url 'timetable:Fac' id=subjectid %}">Constraints</a>
+{% endif %}
+
+<br>
+
+{% if not iserror %}
+<p >Click on the below link to go to home page</p>
+<a href="/timetable/">Home</a>
+{% endif %}
+

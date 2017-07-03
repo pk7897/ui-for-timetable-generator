@@ -1,0 +1,42 @@
+{% if c1 %}
+	<form action="{% url 'timetable:processConstraints' id=subjectid %}" method="post">
+	  {% csrf_token %}
+		<fieldset>
+			<legend>Manage the constraints</legend>
+			<p style="font-weight:bold;">Add Working hours for each day:</p>
+			Monday: <input type="text" value="0" name="whpd" required><br><br>
+			Tuesday: <input type="text" value="0" name="whpd" required><br><br>
+			Wednesday: <input type="text" value="0" name="whpd" required><br><br>
+			Thursday: <input type="text" value="0" name="whpd" required><br><br>
+			Friday: <input type="text" value="0" name="whpd" required><br><br>
+			{% if isc2 %}
+				<p style="font-weight:bold;">Enter the slot numbers for the respective working hours<br>For entering multiple choices separate the choices with a comma ','</p>
+				{% for i in range %}
+					{{ i }}) <input type="text" placeholder="Enter slot number from 0 to 44" name="slots" required><br><br>
+				{% endfor %}
+			{% endif %}
+			<input type="submit" value="Submit">
+			<input type="reset" value="Reset">	
+		</fieldset>
+	</form>
+{% elif isc2 %}
+	<form action="{% url 'timetable:processConstraints' id=subjectid %}" method="post">
+  	  {% csrf_token %}
+		<fieldset>
+			<legend>Manage the constraints</legend>
+			<p style="font-weight:bold;">Enter the slot numbers for the respective working hours<br>For entering multiple choices separate the choices with a comma ','</p>
+			{% for i in range %}
+				{{ i }}) <input type="text" placeholder="Enter slot number from 0 to 44" name="slots" required><br><br>
+			{% endfor %}
+			<input type="submit" value="Submit">
+			<input type="reset" value="Reset">
+		</fieldset>
+	</form>
+{% else %}
+	<p style="font-weight:bold;">Message: {{ message }}</p>
+	<p>Click on the below link to go back and add Faculties or Working hours for <strong>'{{ subjectname }}'</strong</p><br><br>
+	<a href="{% url 'timetable:Fac' id=subjectid %}">Faculties</a>
+	<br>
+	<p >Click on the below link to go to home page</p>
+	<a href="/timetable/">Home</a>
+{% endif %}

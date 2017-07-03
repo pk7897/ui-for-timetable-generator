@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<title>Adding Subjects </title>
+<body>
+	<a href="{% url 'timetable:Group' name=classname %}">Groups</a>
+	<a href="/timetable/">Home</a><br><br>
+	<fieldset>
+		<legend>AddSubject</legend>
+		<form action="{% url 'timetable:processSub' id=1 %}" method="post">
+	  	  {% csrf_token %}
+			<p style="font-weight:bold;">Subject name:</p>	
+			<input type="text" placeholder="Enter Subject name" name="subname" required>
+			<br>
+			<p style="font-weight:bold;">Subject Type:</p>
+			<input type="radio" value="Normal" name="Sub_type" checked>Normal
+			<input type="radio" value="All" name="Sub_type" >All
+			<input type="radio" value="Optional" name="Sub_type" >Optional
+			<br><br>
+			<input type="submit" value="Add">
+			<input type="reset" value="Reset">
+		</form>
+		{% if unmapsubs %}
+		<form action="{% url 'timetable:processSub' id=2 %}" method="post">
+	  	  {% csrf_token %}
+			<p style="font-weight:bold;"> Or Select from the below unmapped Subjects:</p>
+			<select name="unmapsubject">
+				<option value="None">Select from the unmapped Subjects</option>
+			  {% for sub in unmapsubs %}
+			  	<option value="{{ sub.subname }}">{{ sub.subname }}</option>
+			  {% endfor %}
+			</select><br><br>
+			<input type="submit" value="Add">
+			<input type="reset" value="Reset">
+		</form>
+		{% endif %}
+	</fieldset> 
+	
+	
+	{% if subjects %}
+		<br>
+		<p style="font-weight:bold;">Add contraints or Faculties to the below subjects</p>
+		{% for s in subjects %}
+		<form action="{% url 'timetable:Fac' id=s.id %}" method="post">
+			{% csrf_token %}
+			<input type="submit" value=" Manage {{ s.subname }}">
+			<br><br>
+		</form>
+		{% endfor %}
+	{% endif %}
+</body>
+</html>

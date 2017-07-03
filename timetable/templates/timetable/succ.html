@@ -1,0 +1,10 @@
+<p style="font-weight:bold;">Message: {{ message }}</p>
+{% if iserror %}
+	<p >Click on the below link to go and select the classes</p>
+	<a href="{% url 'timetable:Optionald' %}">SelectClass</a>
+{% else %}
+	<p>Click on the below link to Add Faculties</p>
+	<a href="{% url 'timetable:Fac' id=subjectid %}">AddFaculties</a>
+	<p >Click on the below link to go to home page</p>
+	<a href="/timetable/">Home</a>
+{% endif %}

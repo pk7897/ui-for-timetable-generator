@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<title>Adding Groups </title>
+<body>
+	<a href="/timetable/">Home</a><br><br>
+	<form action="{% url 'timetable:processGroup' %}" method="post">
+	  {% csrf_token %}
+	  <fieldset>
+		<legend>AddGroup</legend>
+		<p style="font-weight:bold;">Group name:</p>	
+		<input type="text" placeholder="Enter Group name" name="groupname" required>
+		<br>
+		<br>
+		<input type="submit" value="Add">
+		<input type="reset" value="Reset">
+	  </fieldset> 
+	</form>
+	{% if groups %}
+		<br>
+		<p style="font-weight:bold;">Add subjects to the below groups</p>
+		{% for g in groups %}
+		<form action="{% url 'timetable:Sub' id=g.id %}" method="post">
+			{% csrf_token %}
+			<input type="submit" value=" Add subject in {{ g.grpname }}">
+			<br><br>
+		</form>
+		{% endfor %}
+	{% endif %}
+	
+	
+</body>
+</html>

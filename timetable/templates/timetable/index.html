@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<title>Home Page</title>
+<body>
+	<a href="/timetable/">Class</a>
+	<a href="{% url 'timetable:processind' id=2 %}">AddSubjects</a>
+	<a href="{% url 'timetable:processind' id=3 %}">AddFaculties</a><br>
+<br>
+	{% if indclass %}
+		<form action="{% url 'timetable:Class' %}" method="post">
+		  {% csrf_token %}
+		  <fieldset>
+			<legend>AddClass</legend>
+			<p style="font-weight:bold;">Class name:</p>
+			<input type="text" placeholder="Enter Class name in Roman Numerals" name="classname" required>
+			<br>
+			<br>
+			<input type="submit" value="Add">
+			<input type="reset" value="Reset">
+		  </fieldset> 
+		</form>
+	
+		{% if classes %}
+			<h4>Manage the added Classes:</h4>
+			{% for c in classes %}
+				{% if c.cname == "Mainclass" or c.cname == "Unmapclass" %}
+				{% else %}
+					<form action="{% url 'timetable:Group' name=c.cname %}" method="post">
+						{% csrf_token %}
+						<input type="submit" value=" Add Groups for {{ c.cname }}">
+						<br>
+					</form>
+				{% endif %}		
+			{% endfor %}
+			<br>
+			<br>
+			<br>
+			<form action="{% url 'timetable:generate' %}" method="post">
+			  {% csrf_token %}
+				<fieldset>
+					<legend>Output</legend>
+					<p style="font-weight:bold;">To generate output for a class, Please enter the classname and click the below button</p>
+					<input type="text" name="gen" placeholder="Enter Class name in Roman Numerals" required>
+					<input type="submit" value="Generate Output">
+				</fieldset>
+			</form>
+		{% endif %}
+	{% endif %}
+	
+	{% if indsub %}
+		<form action="{% url 'timetable:HandleSub' %}" method="post">
+		  {% csrf_token %}
+		  <fieldset>
+			<legend>AddSubject</legend>
+			<p style="font-weight:bold;">Subject name:</p>	
+			<input type="text" placeholder="Enter Subject name" name="subname" required>
+			<br>
+			<p style="font-weight:bold;">Subject Type:</p>
+			<input type="radio" value="Normal" name="Sub_type" checked>Normal
+			<input type="radio" value="All" name="Sub_type" >All
+			{% if classes %}
+				<input type="radio" value="Optional" name="Sub_type">Optional
+			{% endif %}
+			<br>
+			<input type="submit" value="Add">
+			<input type="reset" value="Reset">
+		  </fieldset> 
+		</form>
+		
+		{% if subs %}
+			<h4>The added Unmapped Subjects are:</h4>
+			{% for s in subs %}
+				{{ s.subname }}		
+				<br>
+			{% endfor %}
+		{% endif %}
+		<br>
+	{% endif %}
+	
+	{% if indfac %}
+		<form action="{% url 'timetable:HandleFac' %}" method="post">
+		  {% csrf_token %}
+		  <fieldset>
+			<legend>AddFaculty</legend>
+			<p style="font-weight:bold;">Faculty name:</p>	
+			<input type="text" placeholder="Enter Faculty name" name="facname" required>
+			<br>
+			<br>
+			<input type="submit" value="Add">
+			<input type="reset" value="Reset">
+		  </fieldset> 
+		</form>
+		
+		{% if faculties %}
+			<br>
+			<h4>The added Unmapped Faculties are:</h4>
+			{% for f in faculties %}
+				{{ f.facname }}
+				<br>
+			{% endfor %}
+		{% endif %}
+	{% endif %}
+</body>
+</html>
